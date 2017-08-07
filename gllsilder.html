@@ -3,237 +3,24 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<link href="src/gllsilder.css" />
 	<script type="text/javascript" src="jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="dist/gllsilder-1.0.0.js"></script>
 </head>
-<style>
-* {
-	margin: 0;
-	padding: 0;
-}
-.warp {
-	width: 100%;
-	margin: 0 auto;
-	overflow: hidden;
-}
-#silder {
-	width: 100%;
-	position: relative;
-}
-#silder::after {
-	content: '';
-	display: table;
-	clear: both;
-}
-#silder section {
-	height: 600px;
-	width: 100%;
-	float: left;
-	overflow: hidden;
-	position: relative;
-}
-#silder section img {
-	max-width: 100%;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-}
-.arrow {
-	position: absolute;
-	top: 0;
-}
-.arrow div {
-	width: 100px;
-	height: 100px;
-	background: #333;
-	position: absolute;
-	border-radius: 50%;
-	transform: translateY(-50%);
-	cursor: pointer;
-}
-.arrow div::before, .arrow div::after {
-	content: '';
-	position: absolute;
-	width: 0px;
-	height: 0px;
-	left: 50%;
-	top: 50%;
-	border: 30px solid;
-}
-.arrow .arrowL {
-	left: 150px;
-}
-.arrow .arrowL::before, .arrow .arrowL::after {
-	transform: translate(-75%, -50%);
-}
-.arrow .arrowL::before {
-	border-color: transparent #fff transparent transparent;	
-	margin-left: -2px;
-}
-.arrow .arrowL::after {
-	border-color: transparent #333 transparent transparent;
-	margin-left: 2px;
-}
-.arrow .arrowR {
-	right: 150px;
-}
-.arrow .arrowR::before, .arrow .arrowR::after {
-	transform: translate(-25%, -50%);
-}
-.arrow .arrowR::before {
-	border-color: transparent transparent transparent #fff;
-	margin-left: 2px;
-}
-.arrow .arrowR::after {
-	border-color: transparent transparent transparent #333;
-	margin-left: -2px;
-}
-.arrow div:hover {
-	box-shadow: 0px 0px 5px rgba(0,0,0,.6);
-}
-.arrow .arrowL:hover::before {
-	border-color: transparent #ccc transparent transparent;	
-}
-.arrow .arrowR:hover::before {
-	border-color: transparent transparent transparent #ccc;
-}
-</style>
 <body>
 	<div class="warp">
 		<div id="silder">
-			<section><img src="demo1.jpg" alt=""></section>
-			<section><img src="demo2.jpg" alt=""></section>
-			<section><img src="demo3.jpg" alt=""></section>
-			<section><img src="demo4.jpg" alt=""></section>
-			<section><img src="demo5.jpg" alt=""></section>
+			<section><img src="img/1.jpg" alt=""></section>
+			<section><img src="img/2.jpg" alt=""></section>
+			<section><img src="img/3.jpg" alt=""></section>
+			<section><img src="img/4.jpg" alt=""></section>
+			<section><img src="img/5.jpg" alt=""></section>
+			<section><img src="img/6.jpg" alt=""></section>
 		</div>
 	</div>
 </body>
 <script>
-	//english literal translation is good ^^
-	!function($){
-		$.extend($.fn, {
-			gllSilder : function(option){
-				//set control object
-				var container = $(this);
-				//set current function object
-				var FS = $.fn.gllSilder;
-				//set contain parent
-				var containParent = container.parent();
-				//start postion for customer to set
-				//start page of the clone is not included
-				//end page of the clone is not included
-				//all pages of the clone is not included
-				//all pages
-				//every page width
-				//page father width
-				var sIndex, startPage, endPage, page, allPage, pgWidth, ctWidth, Interval, maxPage, minPage, clrTime, randomColor, beforeTime=0;
-				var fs = $.extend({
-					//running time
-					runSpeed : 600,
-					//scrolling time
-					scrollSpeed : 6000,
-					//set bgColor(when section don't have any full screen)
-					color : ['#333', '#666', '#999', '#ccc']
-				}, option);
-				//external methods
-				FS.setStartPosition = function(num){
-					sIndex = num || 1;
-					if(num)clearScroll();
-				}
-
-				page = container.find('section');
-				randomColor = fs.color[parseInt(Math.random()*fs.color.length)];
-
-				startPage = page.eq(0), endPage = page.eq(page.length-1);
-				var createSPage = endPage.clone(),
-					createEPage = startPage.clone();
-				createEPage.appendTo(container), createSPage.prependTo(container);
-
-				for (var i = 0; i < page.length; i++) {
-						page.eq(i).addClass('page'+i+'');
-				}
-
-				init();
-
-				function init(){
-					FS.setStartPosition();
-					allPage = container.find('section');
-
-					pgWidth = allPage.width()+17, ctWidth = pgWidth*allPage.length;
-
-					allPage.css('width', pgWidth), container.css('width', ctWidth);
-					allPage.css('background', randomColor);
-
-					container.css('left', -pgWidth*sIndex);
-
-					$(document).on('resize',function(){init()});
-
-					var arrowLst = createScrollArrow();
-					maxPage = allPage.length-1, minPage = 0;
-					sizeEvent(arrowLst[0], arrowLst[1]);
-					scrollAnimate();
-				}
-				function createScrollArrow(){
-					var arrowWarp = $('<div></div>').addClass('arrow');
-					var arrowLeft = $('<div></div>').addClass('arrowL').appendTo(arrowWarp);
-					var arrowRight = $('<div></div>').addClass('arrowR').appendTo(arrowWarp);
-					arrowWarp.css({'width': pgWidth, 'margin-top': container.innerHeight()/2});
-					containParent.append(arrowWarp);
-					return [arrowLeft, arrowRight]
-				}
-				function clearScroll(){
-					clearInterval(Interval);
-					scrollFunc();
-					setTimeout(function(){scrollAnimate();}, fs.runSpeed);
-				}
-				function scrollAnimate(){
-					Interval = setInterval(function(){sIndex+=1;scrollFunc();}, fs.scrollSpeed + fs.runSpeed);
-				}
-				function scrollFunc(){
-					if(sIndex>maxPage-1){
-						sIndex = minPage;
-						container.css('left', -pgWidth*sIndex);
-						sIndex += 1;
-					}else if(sIndex<minPage+1) {
-						sIndex = maxPage;
-						container.css('left', -pgWidth*sIndex);
-						sIndex -= 1;
-					}
-					container.animate({'left': (-pgWidth*sIndex)}, fs.runSpeed);
-				}
-				function sizeEvent(arrowlf, arrowrt){
-					arrowlf.on('click', function(){
-						if(getTimes()){
-							sIndex-=1;
-							clearScroll();
-						}
-					});
-					arrowrt.on('click', function(){
-						if(getTimes()){
-							sIndex+=1;
-							clearScroll();
-						}
-					});
-				}
-				function scrolldirect(){
-					
-				}
-
-				function getTimes(){
-					var date = (new Date()).getTime();
-					clrTime = date - beforeTime;
-					if(clrTime > fs.runSpeed){
-						beforeTime = date;
-						return true;
-					}
-					return false;
-				}
-			}
-		});
-	}(jQuery);
-
 	$('#silder').gllSilder();
-	$.fn.gllSilder.setStartPosition(2);
+	//$.fn.gllSilder.setStartPosition(2);
 </script>
 </html>
