@@ -4,9 +4,8 @@
 	<meta charset="UTF-8">
 	<title>gllsilder.js</title>
 	<link type="text/css" rel="stylesheet" href="src/gllsilder.css" />
-	<script type="text/javascript" src="jquery-1.12.3.min.js"></script>
-	<script type="text/javascript" src="dist/gllsilder-1.0.0.js"></script>
-	<script type="text/javascript" src="dist/run.js"></script>
+	<script type="text/javascript" src="dist/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="src/gllsilder.js"></script>
 </head>
 <body>
 	<div class="warp">
@@ -20,4 +19,9 @@
 		</div>
 	</div>
 </body>
+<script>
+	$(document).ready(function(){
+	    $('#silder').gllSilder();
+	})
+</script>
 </html>

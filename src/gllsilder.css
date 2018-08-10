@@ -26,6 +26,7 @@
 	position: relative;
 }
 #silder section img {
+	z-index: 1;
 	max-width: 100%;
 	position: absolute;
 	left: 50%;
