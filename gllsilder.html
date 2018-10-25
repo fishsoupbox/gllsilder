@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>gllsilder.js</title>
+	<title>gllsilder</title>
 	<link type="text/css" rel="stylesheet" href="src/gllsilder.css" />
 	<script type="text/javascript" src="dist/jquery-1.12.3.min.js"></script>
 	<script type="text/javascript" src="src/gllsilder.js"></script>
 </head>
 <body>
 	<div class="warp">
-		<div id="silder">
-			<section><img src="img/1.jpg" alt=""></section>
-			<section><img src="img/2.jpg" alt=""></section>
-			<section><img src="img/3.jpg" alt=""></section>
-			<section><img src="img/4.jpg" alt=""></section>
-			<section><img src="img/5.jpg" alt=""></section>
-			<section><img src="img/6.jpg" alt=""></section>
+		<div id="slider">
+			<section class="page"><img src="img/1.jpg" alt=""></section>
+			<section class="page"><img src="img/2.jpg" alt=""></section>
+			<section class="page"><img src="img/3.jpg" alt=""></section>
+			<section class="page"><img src="img/4.jpg" alt=""></section>
+			<section class="page"><img src="img/5.jpg" alt=""></section>
+			<section class="page"><img src="img/6.jpg" alt=""></section>
 		</div>
 	</div>
 </body>
 <script>
 	$(document).ready(function(){
-	    $('#silder').gllSilder();
+	    $('#slider').gllSilder();
 	})
 </script>
 </html>
